@@ -1,4 +1,5 @@
 import time as t
+import registration as reg
 def Menu():
     while True:
         print("==========\n1. Login\n==========\n2. Registration\n==========\n3. Exit\n==========")
@@ -14,8 +15,8 @@ def Menu():
                     cycles-=1
                 break
             elif int(choice)==2:
-                pass
+                reg.login()
             elif int(choice)==1:
                 pass
         except ValueError:
-            print("Enter an integer value please!")
+            print("\nEnter an integer value please!")
