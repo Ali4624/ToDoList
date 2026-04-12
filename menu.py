@@ -1,6 +1,6 @@
 import time as t
 import registration as reg
-def Menu():
+def Menu(): #Menu function that prints the main menu on console
     while True:
         print("==========\n1. Login\n==========\n2. Registration\n==========\n3. Exit\n==========")
         choice = input("\nEnter your choice:")
