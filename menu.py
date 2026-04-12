@@ -1,5 +1,6 @@
 import time as t
 import registration as reg
+import login as log
 def Menu(): #Menu function that prints the main menu on console
     while True:
         print("==========\n1. Login\n==========\n2. Registration\n==========\n3. Exit\n==========")
@@ -15,8 +16,8 @@ def Menu(): #Menu function that prints the main menu on console
                     cycles-=1
                 break
             elif int(choice)==2:
-                reg.login()
+                reg.register()
             elif int(choice)==1:
-                pass
+                log.logging_in()
         except ValueError:
             print("\nEnter an integer value please!")
