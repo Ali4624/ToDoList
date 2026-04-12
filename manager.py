@@ -1,5 +1,10 @@
 #Main manager of the console app to manage ToDo lists
-def main_menu(): 
+
+def create_new(username,plan):
+    with open(f"{username}.txt", 'a') as files:
+        files.write(f"{plan}\n========================\n")
+def main_menu(username): 
+    __username = username
     print("\n----------Welcome to ToDoList Manager!----------\n")
     choice = None
     while True:
@@ -10,7 +15,8 @@ def main_menu():
         choice = input("\nEnter a digit(1-4) please\nEnter your choice:")
         try: 
             if int(choice) == 1:
-                pass
+                plan = input("\nEnter you plans here\n>>>")
+                create_new(username,plan)
             elif int(choice) == 2:
                 pass
             elif int(choice) == 3:

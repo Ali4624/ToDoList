@@ -13,7 +13,7 @@ def Checker(username): #Function that reads file to check whether username and p
         password = input("\nEnter your password:")
         if data[username] == password:
             print(f"\nHello, {username}")
-            manager.main_menu()
+            manager.main_menu(username)
         else:
             print("Wrong username or password!\nPlease try again...")
     else:
