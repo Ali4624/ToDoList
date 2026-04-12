@@ -2,5 +2,5 @@
 *.pyo
 .env
 .venv/
-Logins.txt
+*.txt
 
