@@ -1,4 +1,5 @@
 import json
+import manager
 username = None
 password = None
 def Checker(username): #Function that reads file to check whether username and password exist or not 
@@ -11,7 +12,10 @@ def Checker(username): #Function that reads file to check whether username and p
     if username in data.keys():
         password = input("\nEnter your password:")
         if data[username] == password:
-            print("\nYaaay, you have logged in successfully!")
+            print(f"\nHello, {username}")
+            manager.main_menu()
+        else:
+            print("Wrong username or password!\nPlease try again...")
     else:
         print("\nUsername not found!\nPlease try again...\n")
 def logging_in():

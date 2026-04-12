@@ -1,6 +1,7 @@
 import menu as m
 import json
 import os 
+import manager
 username = None
 password = None
 #Global variables
@@ -28,14 +29,14 @@ def save_user(file, username, password): #Function that saves all logins and pas
     #After overwrites the same file that dictionary with 1 new key:value pair
 def register():
     global username, password
-    username_prompt = "Username should contain at least 8 symbols and a digit \nEnter your username:"
-    password_prompt = "Password should contain a digit and have at least 8 symbols<3\nEnter your password here:"
-
-    print('\n----------\nWelcome to ToDoList Manager!\n----------')
-    
+    username_prompt = "====================\nUsername should contain at least 8 symbols and a digit \nEnter your username:"
+    password_prompt = "--------------------\nPassword should contain a digit and have at least 8 symbols<3\nEnter your password here:"
     username = validator(username_prompt)
     password = validator(password_prompt)
 
     #Working with data file where logins and passwords are saved
     save_user("users.json",username, password)
+    print(f"\nHello, {username}")
+    manager.main_menu()
+
            

@@ -4,7 +4,7 @@ import login as log
 def Menu(): #Menu function that prints the main menu on console
     while True:
         print("==========\n1. Login\n==========\n2. Registration\n==========\n3. Exit\n==========")
-        choice = input("\nEnter your choice:")
+        choice = input("Enter your choice:")
         try:
             if int(choice)==3:
                 cycles = 3
