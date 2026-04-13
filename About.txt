@@ -1,2 +1,3 @@
 Hey everyone!
 This is the terminal based project on python (To Do list manager) to practice the syntax knowledge.
+Welcome and good luck there .......................................................................
