@@ -1,4 +1,3 @@
 Hey everyone!
 This is the terminal based project on python (To Do list manager) to practice the syntax knowledge.
-P.S: Do not forget to work on username uniqueness problem on registration module and to add a feature and let's user log in just after 
-registration automatically 
+P.S: Do not forget to work on username uniqueness problem on registration module

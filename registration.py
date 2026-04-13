@@ -32,6 +32,10 @@ def register():
     username_prompt = "====================\nUsername should contain at least 8 symbols and a digit \nEnter your username:"
     password_prompt = "--------------------\nPassword should contain a digit and have at least 8 symbols<3\nEnter your password here:"
     username = validator(username_prompt)
+    with open('users.json', 'r') as ch:
+        if username in json.load(ch).keys():
+            print("\nUsername already exists!\nPlease, try another one...\n")
+            return 0
     password = validator(password_prompt)
 
     #Working with data file where logins and passwords are saved
