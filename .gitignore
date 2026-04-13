@@ -4,4 +4,4 @@
 .venv/
 *.txt
 *.json
-
+.mypy_cache
