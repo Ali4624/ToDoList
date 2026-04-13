@@ -41,6 +41,6 @@ def register():
     #Working with data file where logins and passwords are saved
     save_user("users.json",username, password)
     print(f"\nHello, {username}")
-    manager.main_menu()
+    manager.main_menu(username)
 
            
