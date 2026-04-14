@@ -1,41 +1,14 @@
 import datetime as dt
-
-from rich import print
-from rich.console import Console
-from rich.panel import Panel
-from rich.prompt import Prompt
-from rich.table import Table
-
-console = Console()
-
-
-def create_new(username, plan):
-    with open(f"{username}.txt", "a") as files:
-        console.print("\n[bold cyan]Date Entry[/bold cyan]")
-        due_date = Prompt.ask("Enter the due date [grey70](Year-Month-Day)[/grey70]")
-
+def create_new(username,plan):
+    status = "Created"
+    with open(f"{username}.txt", 'a') as files:
+        due_date = input("\nEnter the data in Year-Month-Day format...\nEnter the due date of this task:")
         creation_time = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-        files.write(
-            f"{plan}\t-\t{creation_time}\n========================\n"
-            f"The due date is {due_date}\n---------------------------------\n"
-        )
-
-        console.print(
-            f"\n[bold green]✔[/bold green] Task '[italic]{plan}[/italic]' saved successfully!\n"
-        )
-
-
-def main_menu(username):
-    console.clear()
-    console.print(
-        Panel(
-            f"Welcome to [bold magenta]ToDoList Manager[/bold magenta], [yellow]{username}[/yellow]!",
-            style="bold white",
-            border_style="magenta",
-        )
-    )
-
+        files.write(f"{plan}\t-\t{creation_time}\n========================\nThe due date is {due_date}\n---------------------------------\nStatus:{status}")
+def main_menu(username): 
+    __username = username
+    print("\n----------Welcome to ToDoList Manager!----------\n")
+    choice = None
     while True:
         menu_table = Table(box=None, show_header=False)
         menu_table.add_row("[bold cyan]1.[/bold cyan] Create a new list")
