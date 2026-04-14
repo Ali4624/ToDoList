@@ -1,24 +1,49 @@
 import json
+
+from rich import print
+from rich.console import Console
+from rich.panel import Panel
+
 import manager
+
+console = Console()
 username = None
 password = None
-def Checker(username): #Function that reads file to check whether username and password exist or not 
+
+
+def Checker(username):
     global password
     try:
-        with open('users.json', 'r') as f:
+        with open("users.json", "r") as f:
             data = json.load(f)
     except FileNotFoundError:
-        print("\nInternal error!\nPlease try again later.\nSorry for inconvenience<3")
+        print(
+            Panel(
+                "[bold red]Internal error![/bold red]\nPlease try again later.",
+                title="Error",
+                border_style="red",
+            )
+        )
+        return
+
     if username in data.keys():
-        password = input("\nEnter your password:")
+        password = console.input("\n[bold cyan]Enter your password:[/bold cyan] ")
+
         if data[username] == password:
-            print(f"\nHello, {username}")
+            print(f"\n[bold green] Hello, {username}![/bold green]")
             manager.main_menu(username)
         else:
-            print("Wrong username or password!\nPlease try again...")
+            print(
+                "[bold red]Wrong username or password![/bold red]\nPlease try again..."
+            )
     else:
-        print("\nUsername not found!\nPlease try again...\n")
+        print("\n[bold yellow]Username not found![/bold yellow]\nPlease try again...\n")
+
+
 def logging_in():
     global username
-    username = input('\nEnter your username:')
+    print(
+        Panel.fit("[bold magenta]ToDoList Login[/bold magenta]", border_style="magenta")
+    )
+    username = console.input("[bold blue]Enter your username:[/bold blue] ")
     Checker(username)

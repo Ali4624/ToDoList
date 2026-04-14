@@ -2,6 +2,6 @@
 *.pyo
 .env
 .venv/
-*.txt
 *.json
 .mypy_cache
+__pycache__
