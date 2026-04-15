@@ -1,10 +1,12 @@
 #Main manager of the console app to manage ToDo lists
 import datetime as dt
 def create_new(username,plan):
-    with open(f"{username}.txt", 'a') as files:
+    with open(f"{username}.txt", 'a', encoding='utf8') as files:
+        status = "Created"
         due_date = input("\nEnter the data in Year-Month-Day format...\nEnter the due date of this task:")
         creation_time = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         files.write(f"{plan}\t-\t{creation_time}\n========================\nThe due date is {due_date}\n---------------------------------")
+        files.write(f"\nStatus : {status}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 def main_menu(username): 
     __username = username
     print("\n----------Welcome to ToDoList Manager!----------\n")
