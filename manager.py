@@ -1,12 +1,19 @@
 #Main manager of the console app to manage ToDo lists
 import datetime as dt
+import os 
+import json
 def create_new(username,plan):
-    with open(f"{username}.txt", 'a', encoding='utf8') as files:
-        status = "Created"
-        due_date = input("\nEnter the data in Year-Month-Day format...\nEnter the due date of this task:")
-        creation_time = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-        files.write(f"{plan}\t-\t{creation_time}\n========================\nThe due date is {due_date}\n---------------------------------")
-        files.write(f"\nStatus : {status}\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+    due_time = input("Format: YYYY.mm.dd: 2025.01.15\nEnter the due date:")
+    list = due_time.split(".")
+    if os.path.exists(f"{username}.json"):
+        with open(f"{username}.json", 'r', encoding='utf8') as files:
+            data = json.load(files)
+    else:
+        data = {}
+    data[plan] = [dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), due_time, "Created" ]    
+    with open(f"{username}.json", 'w', encoding='utf8') as save:
+            json.dump(data, save, indent = 4, ensure_ascii=False)
+        
 def main_menu(username): 
     __username = username
     print("\n----------Welcome to ToDoList Manager!----------\n")
