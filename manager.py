@@ -44,8 +44,9 @@ def main_menu(username):
     while True:
         print("1.Create a new list!")
         print('2.Assign the status of the plan')
-        print("3.Remove the list.")
-        print("4.Log out...")
+        print("3.Remove the list")
+        print("4.Display all my plans")
+        print("5.Log out...")
         choice = input("\nEnter a digit(1-4) please\nEnter your choice:")
         try: 
             if int(choice) == 1:
@@ -56,6 +57,8 @@ def main_menu(username):
             elif int(choice) == 3:
                 pass
             elif int(choice) == 4:
+                pass
+            elif int(choice) == 5:
                 break
             else:
                 print("\nYou have entered a wrong choice!\nPlease try again...")
