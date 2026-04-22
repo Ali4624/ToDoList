@@ -2,7 +2,7 @@
 import datetime as dt
 import os 
 import json
-counter = 1
+counter = NotImplemented
 def delete_item(username):
     if os.path.exists(f"{username}.json"):
         data = print_all(username)
@@ -30,14 +30,16 @@ def print_all(username):
     else:
         print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
 def create_new(username):
-    global counter
+    global counter 
     plan = input("\nEnter you plan here\n>>>")
     due_time = input("Format: YYYY.mm.dd: 2025.01.15\nEnter the due date:")
     if os.path.exists(f"{username}.json"):
         with open(f"{username}.json", 'r', encoding='utf8') as files:
             data = json.load(files)
+            counter = len(data.keys())+1
     else:
         data = {}
+        counter = 1 
     data[counter] = [plan,dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), due_time, "Created" ]    
     with open(f"{username}.json", 'w', encoding='utf8') as save:
             json.dump(data, save, indent = 4, ensure_ascii=False)
@@ -60,7 +62,6 @@ def status_change(username, status = "Created"):
 def main_menu(username): 
     __username = username
     print("\n----------Welcome to ToDoList Manager!----------\n")
-    choice = None
     while True:
         print("1.Create a new list!")
         print('2.Assign the status of the plan')
@@ -68,20 +69,21 @@ def main_menu(username):
         print("4.Display all my plans")
         print("5.Log out...")
         choice = input("\nEnter a digit(1-5) please\nEnter your choice:")
-        try: 
-            if int(choice) == 1:
-                create_new(__username)
-            elif int(choice) == 2:
-                status_change(__username)
-            elif int(choice) == 3:
-                delete_item(__username)
-            elif int(choice) == 4:
-                print_all(__username)
-            elif int(choice) == 5:
-                break
-            else:
-                print("\nYou have entered a wrong choice!\nPlease try again...")
-                continue
+        try:
+            choice = int(choice) 
         except ValueError:
             print("Invalid input!\nPlease enter a digit from 1 to 5...")
+            continue
+        if choice == 1:
+            create_new(__username)
+        elif choice == 2:
+            status_change(__username)
+        elif choice == 3:
+            delete_item(__username)
+        elif choice == 4:
+            print_all(__username)
+        elif choice == 5:
+            break
+        else:
+            print("\nYou have entered a wrong choice!\nPlease try again...")
             continue
