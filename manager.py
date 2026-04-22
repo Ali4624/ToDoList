@@ -9,8 +9,10 @@ def delete_item(username):
         while True:
             try:    
                 choice = input("\nEnter the number of the plan you want to delete:")
-                deleted_value = data.pop(int(choice))
+                deleted_value = data.pop(choice)
                 print(f"\n{deleted_value} is deleted from your list!!!\n")
+                with open(f"{username}.json", 'w', encoding="utf8") as overwrite:
+                    json.dump(data, overwrite, indent = 4, ensure_ascii=False)
                 break
             except (ValueError, KeyError):
                 print(f"\nInvalid input!\nPlease enter a number between 1 and {len(data.keys())}")

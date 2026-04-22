@@ -1,9 +1,6 @@
 import json
 import manager
-username = None
-password = None
 def Checker(username): #Function that reads file to check whether username and password exist or not 
-    global password
     try:
         with open('users.json', 'r') as f:
             data = json.load(f)
@@ -19,6 +16,5 @@ def Checker(username): #Function that reads file to check whether username and p
     else:
         print("\nUsername not found!\nPlease try again...\n")
 def logging_in():
-    global username
     username = input('\nEnter your username:')
     Checker(username)

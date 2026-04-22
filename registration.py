@@ -2,8 +2,6 @@ import menu as m
 import json
 import os 
 import manager
-username = None
-password = None
 #Global variables
 def validator(prompt): #Function that checks username and password for validation
     while True:
@@ -28,7 +26,6 @@ def save_user(file, username, password): #Function that saves all logins and pas
     #If we have, it loads data from it and saves as local dictionary
     #After overwrites the same file that dictionary with 1 new key:value pair
 def register():
-    global username, password
     username_prompt = "====================\nUsername should contain at least 8 symbols and a digit \nEnter your username:"
     password_prompt = "--------------------\nPassword should contain a digit and have at least 8 symbols<3\nEnter your password here:"
     username = validator(username_prompt)
