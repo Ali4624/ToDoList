@@ -48,22 +48,38 @@ def create_new(username):
 def status_change(username, status = "Created"):
     if os.path.exists(f"{username}.json"):
         data = print_all(username)
+        counter = len(data.keys())+1
         while True:
             try:
                 choice = input("Enter the number of the plan you want to change the status of:")
+                if int(choice)>=counter:
+                    print(f"\nInvalid input!\nYou have only {counter-1} active plans!!!")
+                    continue
+                print("\n1.InProcess\n2.Completed\n3.Frozen")
+                slc = input("Enter a number from 1 to 3 below...\n>>>")
+                if int(slc) == 1:
+                    status = "InProcess"
+                elif int(slc) == 2:
+                    status = "Completed"
+                elif int(slc) == 3:
+                    status = "Frozen"
+                else:
+                    print("\nYou have entered a wrong input!\nPlease try again...")
+                    continue
                 data[choice][3] = status
                 break
             except (ValueError,KeyError):
-                print(f"\nInvalid input\nTry to enter an integer please...\nFrom 1 to {counter}<3")
+                print(f"\nInvalid input\nTry to enter an integer please...\nFrom 1 to {counter-1}<3")
+                continue
         with open(f"{username}.json", 'w', encoding="utf8") as write:
             json.dump(data, write, indent=4, ensure_ascii=False)
     else:
         print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
 def main_menu(username): 
     __username = username
-    print("\n----------Welcome to ToDoList Manager!----------\n")
+    print("\n----------Welcome to ToDoList Manager!----------")
     while True:
-        print("1.Create a new list!")
+        print("\n1.Create a new list!")
         print('2.Assign the status of the plan')
         print("3.Remove the list")
         print("4.Display all my plans")

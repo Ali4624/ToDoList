@@ -1,3 +1,2 @@
 Hey everyone!
 This is the terminal based project on python (To Do list manager) to practice the syntax knowledge.
-P.S Work on global counter logic on creation of a list 
