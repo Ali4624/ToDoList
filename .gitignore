@@ -2,6 +2,5 @@
 *.pyo
 .env
 .venv/
-*.txt
 *.json
 
