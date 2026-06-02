@@ -1,8 +1,10 @@
 #Main manager of the console app to manage ToDo lists
-import datetime as dt
-import os 
-import json
-counter = NotImplemented
+import mysql.connector 
+#import datetime as dt
+#import os 
+#import json
+#counter = NotImplemented
+"""
 def delete_item(username):
     if os.path.exists(f"{username}.json"):
         data = print_all(username)
@@ -45,8 +47,7 @@ def create_new(username):
     data[counter] = [plan,dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), due_time, "Created" ]    
     with open(f"{username}.json", 'w', encoding='utf8') as save:
             json.dump(data, save, indent = 4, ensure_ascii=False)
-    counter += 1
-        
+    counter += 1        
 def status_change(username, status = "Created"):
     if os.path.exists(f"{username}.json"):
         data = print_all(username)
@@ -105,3 +106,12 @@ def main_menu(username):
         else:
             print("\nYou have entered a wrong choice!\nPlease try again...")
             continue
+"""
+mydb = mysql.connector.connect(host="localhost", user="root",password="Awesome004",database="ToDoList" )
+print("Connected!!!")
+cursor = mydb.cursor()
+cursor.execute("SELECT VERSION()")
+
+for row in cursor:
+    print(row)
+mydb.close()
