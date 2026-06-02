@@ -1,3 +1,4 @@
+import mysql.connector 
 import menu as m
 import json
 import os 
@@ -35,7 +36,9 @@ def register():
             print("\nUsername already exists!\nPlease, try another one...\n")
             return 
     password = validator(password_prompt)
-
+    with mysql.connector.connect(host='localhost', user="root", password="Awesome004", database="todolist") as conn:
+        with conn.cursor() as cursor:
+            cursor.execute(f"CREATE TABLE {username} (TaskID INT PRIMARY KEY AUTO_INCREMENT, Task VARCHAR(50) NOT NULL,CreationTime TIMESTAMP NOT NULL, ExpectedCompletion DATE DEFAULT '2100-12-31')")
     #Working with data file where logins and passwords are saved
     save_user("users.json",username, password)
     print(f"\nHello, {username}")
