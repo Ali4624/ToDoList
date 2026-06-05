@@ -1,11 +1,9 @@
-import json
+import mysql.connector as msl
 import manager
 def Checker(username): #Function that reads file to check whether username and password exist or not 
-    try:
-        with open('users.json', 'r') as f:
-            data = json.load(f)
-    except FileNotFoundError:
-        print("\nInternal error!\nPlease try again later.\nSorry for inconvenience<3")
+    with msl.connect(host='localhost', user = 'root', password = 'Awesome004', database = 'todolist') as conn:
+        with conn.cursor() as mycursor:
+            mycursor.execute("SELECT username, password FROM users")
     if username in data.keys():
         password = input("\nEnter your password:")
         if data[username] == password:
