@@ -1,7 +1,5 @@
 import mysql.connector 
 import menu as m
-import json
-import os 
 import manager
 #Global variables
 def validator(prompt): #Function that checks username and password for validation
