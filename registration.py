@@ -10,17 +10,17 @@ def validator(prompt): #Function that checks username and password for validatio
             continue
     #Function always returns valid data
 def register(): #Function that saves username and password in database
-    username_prompt = "====================\nUsername should contain at least 8 symbols and a digit \nEnter your username:"
-    password_prompt = "--------------------\nPassword should contain a digit and have at least 8 symbols<3\nEnter your password here:"
-    username = validator(username_prompt)
+    username_prompt: str = "====================\nUsername should contain at least 8 symbols and a digit \nEnter your username:"
+    password_prompt: str = "--------------------\nPassword should contain a digit and have at least 8 symbols<3\nEnter your password here:"
+    username: str = validator(username_prompt)
     with mysql.connector.connect(host=manager.host, user=manager.user, password=manager.password, database=manager.db_name) as conn:
         with conn.cursor() as cursor:
             cursor.execute("SELECT username FROM users")
-            usernames = cursor.fetchall()
+            usernames: list[tuple[str]] = cursor.fetchall()
             if username in usernames:
                 print("Username already exists!!!\nPlease enter another username...")
-                username = validator(username_prompt) 
-            passwrd = validator(password_prompt)
+                username: str = validator(username_prompt) 
+            passwrd: str = validator(password_prompt)
             cursor.execute("INSERT INTO users(username, password) VALUES(%s , %s)", (username, passwrd))
             conn.commit()
     print(f"\nHello, {username}")

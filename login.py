@@ -7,7 +7,7 @@ def Checker(username): #Function that reads file to check whether username and p
             mycursor.execute('SELECT username FROM users WHERE username = %s', (username,))
             try:
                 if username in mycursor.fetchone():
-                    passwrd  = input("\nEnter your password:")
+                    passwrd: str  = input("\nEnter your password:")
                     mycursor.execute('SELECT password FROM users WHERE username = %s', (username,))
                     if passwrd  in mycursor.fetchone():
                         print(f"\nHello, {username}")
@@ -15,5 +15,5 @@ def Checker(username): #Function that reads file to check whether username and p
             except TypeError:
                 print("Wrong username or password!\nPlease try again...")
 def logging_in():
-    username = input('\nEnter your username:')
+    username: str = input('\nEnter your username:')
     Checker(username)
