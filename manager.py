@@ -3,8 +3,6 @@ from dotenv import load_dotenv
 import mysql.connector 
 import datetime as dt
 import os 
-import json
-counter = NotImplemented
 load_dotenv(".config.env")
 host: str = os.getenv("DB_HOST")
 user: str = os.getenv("DB_USER")
@@ -39,20 +37,25 @@ def print_all(username):
     else:
         print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
 def create_new(username):
-    global counter 
-    plan = input("\nEnter you plan here\n>>>")
-    due_time = input("Format: YYYY.mm.dd: 2025.01.15\nEnter the due date:")
-    if os.path.exists(f"{username}.json"):
-        with open(f"{username}.json", 'r', encoding='utf8') as files:
-            data = json.load(files)
-            counter = len(data.keys())+1
-    else:
-        data = {}
-        counter = 1 
-    data[counter] = [plan,dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S"), due_time, "Created" ]    
-    with open(f"{username}.json", 'w', encoding='utf8') as save:
-            json.dump(data, save, indent = 4, ensure_ascii=False)
-    counter += 1        
+    plan: str = input("\nEnter your plan here\n>>>")
+    while True:
+        if len(plan) > 50:
+            print("\nThe length of the task description cannot be more than 50 symbols\nPlease make it shorter<3...")
+            plan : str = input("\nEnter your plan here\n>>>")
+        else:
+            break  
+    while True:
+        due_time = input("Format: YYYY-mm-dd(e.g. 2025-01-15)\nEnter the due date:")
+        try:
+            dt.datetime.strptime(due_time, "%Y-%m-%d")
+            break
+        except ValueError:
+            print("\nInvalid date. Please use YYYY-mm-dd (e.g. 2025-01-15)❤️")
+    creation_time = dt.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    with mysql.connector.connect(host=host,user=user,password=password,database=db_name) as conn:
+        with conn.cursor() as mycursor:
+            mycursor.execute("INSERT INTO todos(username,task,creationTime,expectedCompletion) VALUES(%s,%s,%s,%s)", (username,plan,creation_time,due_time))
+            conn.commit()
 def status_change(username, status = "Created"):
     if os.path.exists(f"{username}.json"):
         data = print_all(username)
@@ -84,15 +87,16 @@ def status_change(username, status = "Created"):
     else:
         print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
 def main_menu(username): 
-    __username = username
+    __username: str = username
     print("\n----------Welcome to ToDoList Manager!----------")
     while True:
         print("\n1.Create a new list!")
         print('2.Assign the status of the plan')
         print("3.Remove the list")
         print("4.Display all my plans")
-        print("5.Log out...")
-        choice = input("\nEnter a digit(1-5) please\nEnter your choice:")
+        print("5.Profile")
+        print("6.Log out...")
+        choice: str = input("\nEnter a digit(1-5) please\nEnter your choice:")
         try:
             choice = int(choice) 
         except ValueError:
@@ -107,6 +111,8 @@ def main_menu(username):
         elif choice == 4:
             print_all(__username)
         elif choice == 5:
+            pass
+        elif choice == 6:
             break
         else:
             print("\nYou have entered a wrong choice!\nPlease try again...")
