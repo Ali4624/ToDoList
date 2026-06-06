@@ -1,10 +1,15 @@
 #Main manager of the console app to manage ToDo lists
+from dotenv import load_dotenv
 import mysql.connector 
 import datetime as dt
 import os 
 import json
 counter = NotImplemented
-
+load_dotenv(".config.env")
+host = os.getenv("DB_HOST")
+user = os.getenv("DB_USER")
+password = os.getenv("DB_PASSWORD")
+db_name = os.getenv("DB_NAME")
 def delete_item(username):
     if os.path.exists(f"{username}.json"):
         data = print_all(username)
