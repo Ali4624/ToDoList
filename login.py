@@ -1,18 +1,19 @@
 import mysql.connector as msl
 import manager
+
 def Checker(username): #Function that reads file to check whether username and password exist or not 
-    with msl.connect(host='localhost', user = 'root', password = 'Awesome004', database = 'todolist') as conn:
+    with msl.connect(host=manager.host, user = manager.user, password = manager.password, database = manager.db_name) as conn:
         with conn.cursor() as mycursor:
-            mycursor.execute("SELECT username, password FROM users")
-    if username in data.keys():
-        password = input("\nEnter your password:")
-        if data[username] == password:
-            print(f"\nHello, {username}")
-            manager.main_menu(username)
-        else:
-            print("Wrong username or password!\nPlease try again...")
-    else:
-        print("\nUsername not found!\nPlease try again...\n")
+            mycursor.execute('SELECT username FROM users WHERE username = %s', (username,))
+            try:
+                if username in mycursor.fetchone():
+                    passwrd  = input("\nEnter your password:")
+                    mycursor.execute('SELECT password FROM users WHERE username = %s', (username,))
+                    if passwrd  in mycursor.fetchone():
+                        print(f"\nHello, {username}")
+                        manager.main_menu(username)
+            except TypeError:
+                print("Wrong username or password!\nPlease try again...")
 def logging_in():
     username = input('\nEnter your username:')
     Checker(username)
