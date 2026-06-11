@@ -12,6 +12,8 @@ def Checker(username): #Function that reads file to check whether username and p
                     if passwrd  in mycursor.fetchone():
                         print(f"\nHello, {username}")
                         manager.main_menu(username)
+                    else:
+                        print("\nWrong password, please try again...")
             except TypeError:
                 print("Wrong username or password!\nPlease try again...")
 def logging_in():

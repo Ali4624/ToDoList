@@ -23,19 +23,18 @@ def delete_item(username):
                 print(f"\nInvalid input!\nPlease enter a number between 1 and {len(data.keys())}")
     else:
         print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
-def print_all(username):
-    if os.path.exists(f"{username}.json"):
-        with open(f"{username}.json", "r", encoding="utf8") as read:
-            data = json.load(read)
-            counter = 1
-            while counter <= len(data.keys()):
-                print("="*10,f"\n{counter}.", end="")
-                for element in data[str(counter)]:
-                    print(f"{element}\n",'-'*10)
-                counter += 1
-        return data
-    else:
-        print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
+def print_all(username)->list:
+    with mysql.connector.connect(host=host,user=user,password=password,database=db_name) as conn:
+        with conn.cursor() as my_cursor:
+            my_cursor.execute("SELECT taskId, task, creationTime, expectedCompletion, status FROM todos WHERE username = %s", (username,))
+            output = my_cursor.fetchall()
+            id_nums = []
+            for row in output:
+                id,task,cr_time,exp_time,status = row
+                print("==============================================")
+                print(f"ID:{id}\nTask description:{task}\nCreation time:{cr_time}\nDue time:{exp_time}\nStatus:{status}")
+                id_nums.append(id)
+    return id_nums
 def create_new(username):
     plan: str = input("\nEnter your plan here\n>>>")
     while True:
@@ -56,36 +55,32 @@ def create_new(username):
         with conn.cursor() as mycursor:
             mycursor.execute("INSERT INTO todos(username,task,creationTime,expectedCompletion) VALUES(%s,%s,%s,%s)", (username,plan,creation_time,due_time))
             conn.commit()
-def status_change(username, status = "Created"):
-    if os.path.exists(f"{username}.json"):
-        data = print_all(username)
-        counter = len(data.keys())+1
-        while True:
-            try:
-                choice = input("Enter the number of the plan you want to change the status of:")
-                if int(choice)>=counter:
-                    print(f"\nInvalid input!\nYou have only {counter-1} active plans!!!")
-                    continue
-                print("\n1.InProcess\n2.Completed\n3.Frozen")
-                slc = input("Enter a number from 1 to 3 below...\n>>>")
-                if int(slc) == 1:
-                    status = "InProcess"
-                elif int(slc) == 2:
-                    status = "Completed"
-                elif int(slc) == 3:
-                    status = "Frozen"
-                else:
-                    print("\nYou have entered a wrong input!\nPlease try again...")
-                    continue
-                data[choice][3] = status
+def status_change(username):
+    prompt: str = "1.Cancelled\n2.Completed\nEnter the status to be changed(1 or 2):"
+    while True:
+        ids_list: list = print_all(username)
+        id : int = input("Enter the ID of the task you want to edit(e.g 100):")
+        status: int = input(prompt)
+        try:
+            id = int(id)
+            status = int(status)
+            if id in ids_list and (status == 1 or status == 2):
                 break
-            except (ValueError,KeyError):
-                print(f"\nInvalid input\nTry to enter an integer please...\nFrom 1 to {counter-1}<3")
+            else:
+                print("Something went wrong...\nPlease try again")
                 continue
-        with open(f"{username}.json", 'w', encoding="utf8") as write:
-            json.dump(data, write, indent=4, ensure_ascii=False)
-    else:
-        print("\nError!\nYou have no active plans now...\nCreate one first please<3\n")
+        except  ValueError:
+            print("Enter an integer values please!")      
+    with mysql.connector.connect(host=host, user=user,password=password,database=db_name) as conn:
+        with conn.cursor() as my_cursor:
+            match status:
+                case 1:
+                    my_cursor.execute("UPDATE todos SET status ='CANCELLED' WHERE taskId = %s", (id,))
+                case 2:
+                    my_cursor.execute("UPDATE todos SET status ='COMPLETED' WHERE taskId = %s", (id,))
+                case _:
+                    print("Something went wrong...\nTry again later please\nSorry for inconvenience<3")
+            conn.commit()
 def main_menu(username): 
     __username: str = username
     print("\n----------Welcome to ToDoList Manager!----------")
