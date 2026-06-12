@@ -17,5 +17,5 @@ def Checker(username): #Function that reads file to check whether username and p
             except TypeError:
                 print("Wrong username or password!\nPlease try again...")
 def logging_in():
-    username: str = input('\nEnter your username:')
+    username: str = input('\nEnter your username:').strip()
     Checker(username)

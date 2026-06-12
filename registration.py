@@ -2,7 +2,7 @@ import mysql.connector
 import manager
 def validator(prompt): #Function that checks username and password for validation
     while True:
-        data = input(prompt)
+        data = input(prompt).strip()
         if len(data) >= 8 and any(char.isdigit() for char in data):
             return data
         else:
