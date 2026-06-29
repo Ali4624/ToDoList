@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ToDoList Manager</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/css/style.css?v=2">
+</head>
+<body>
+
+    <!-- FLOATING SHAPES -->
+    <div class="floating-shapes">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+        <div class="shape shape-3"></div>
+        <div class="shape shape-4"></div>
+        <div class="shape shape-5"></div>
+    </div>
+
+    <!-- AUTH PAGE -->
+    <div id="auth-page" class="page">
+        <div class="auth-container">
+            <h1 class="app-title">ToDoList</h1>
+            <p class="app-subtitle">Organize your day, one task at a time</p>
+            <div class="auth-tabs">
+                <button class="tab-btn active" data-tab="login">Login</button>
+                <button class="tab-btn" data-tab="register">Register</button>
+            </div>
+
+            <form id="login-form" class="auth-form">
+                <div class="form-group">
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" placeholder="Enter your username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Login</button>
+            </form>
+
+            <form id="register-form" class="auth-form hidden">
+                <div class="form-group">
+                    <label for="reg-username">Username</label>
+                    <input type="text" id="reg-username" placeholder="Min 8 chars, must contain a digit" required>
+                </div>
+                <div class="form-group">
+                    <label for="reg-password">Password</label>
+                    <input type="password" id="reg-password" placeholder="Min 8 chars, must contain a digit" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+
+            <p id="auth-error" class="error-text hidden"></p>
+        </div>
+    </div>
+
+    <!-- DASHBOARD PAGE -->
+    <div id="dashboard-page" class="page hidden">
+        <header class="topbar">
+            <h1>ToDoList</h1>
+            <div class="topbar-right">
+                <span id="welcome-user"></span>
+                <button id="profile-btn" class="btn btn-sm">Profile</button>
+                <button id="logout-btn" class="btn btn-sm btn-danger">Log out</button>
+            </div>
+        </header>
+
+        <main class="dashboard">
+            <!-- CREATE TODO -->
+            <section class="create-section">
+                <h2>New Task</h2>
+                <form id="create-form" class="create-form">
+                    <div class="form-row">
+                        <input type="text" id="task-input" placeholder="What needs to be done?" maxlength="50" required>
+                        <input type="date" id="due-date-input" required>
+                        <button type="submit" class="btn btn-primary">Add</button>
+                    </div>
+                    <div id="char-counter" class="char-counter">0 / 50</div>
+                    <p id="create-error" class="error-text hidden"></p>
+                </form>
+            </section>
+
+            <!-- TODO LIST -->
+            <section class="todos-section">
+                <div class="todos-header">
+                    <h2>My Tasks</h2>
+                    <button id="refresh-btn" class="btn btn-sm">Refresh</button>
+                </div>
+                <div id="task-stats" class="task-stats hidden"></div>
+                <div id="todos-list" class="todos-list">
+                    <div class="empty-msg">
+                        <div class="empty-icon">+</div>
+                        <p>No tasks yet. Create one above!</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- PROFILE MODAL -->
+        <div id="profile-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Profile</h2>
+                    <button id="close-modal" class="btn-close">&times;</button>
+                </div>
+                <form id="profile-form">
+                    <div class="form-group">
+                        <label for="profile-name">Full Name</label>
+                        <input type="text" id="profile-name" placeholder="e.g. John White">
+                    </div>
+                    <div class="form-group">
+                        <label>Gender</label>
+                        <select id="profile-gender">
+                            <option value="">Select...</option>
+                            <option value="1">Male</option>
+                            <option value="2">Female</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile-bday">Birthday</label>
+                        <input type="date" id="profile-bday">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Save</button>
+                </form>
+                <p id="profile-error" class="error-text hidden"></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/static/js/app.js?v=2"></script>
+</body>
+</html>
