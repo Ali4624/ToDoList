@@ -1,13 +1,6 @@
 #Main manager of the console app to manage ToDo lists
-from dotenv import load_dotenv
-import mysql.connector 
 from datetime import datetime
-import os 
-load_dotenv(".config.env")
-host: str = os.getenv("DB_HOST")
-user: str = os.getenv("DB_USER")
-password: str = os.getenv("DB_PASSWORD")
-db_name: str = os.getenv("DB_NAME")
+from backend.database import get_connection
 def delete_item(username,/)->str:
     while True:
         ids_list: list = print_all(username)
@@ -21,15 +14,15 @@ def delete_item(username,/)->str:
                 continue
         except  ValueError:
             print("Enter an integer values please!")      
-    with mysql.connector.connect(host=host, user=user,password=password,database=db_name) as conn:
+    with get_connection() as conn:
         with conn.cursor() as my_cursor:
             my_cursor.execute("SELECT task FROM todos WHERE taskId = %s", (id,))
-            task_description: str = my_cursor.fetchone()
+            task_description: tuple[str] = my_cursor.fetchone()
             my_cursor.execute("DELETE FROM todos WHERE taskId = %s", (id,))
             conn.commit()
     return task_description
 def print_all(username,/)->list:
-    with mysql.connector.connect(host=host,user=user,password=password,database=db_name) as conn:
+    with get_connection() as conn:
         with conn.cursor() as my_cursor:
             my_cursor.execute("SELECT taskId, task, creationTime, expectedCompletion, status FROM todos WHERE username = %s", (username,))
             output = my_cursor.fetchall()
@@ -56,7 +49,7 @@ def create_new(username,/):
         except ValueError:
             print("\nInvalid date. Please use YYYY-mm-dd (e.g. 2025-01-15)❤️")
     creation_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    with mysql.connector.connect(host=host,user=user,password=password,database=db_name) as conn:
+    with get_connection() as conn:
         with conn.cursor() as mycursor:
             mycursor.execute("INSERT INTO todos(username,task,creationTime,expectedCompletion) VALUES(%s,%s,%s,%s)", (username,plan,creation_time,due_time))
             conn.commit()
@@ -76,7 +69,7 @@ def status_change(username,/):
                 continue
         except  ValueError:
             print("Enter an integer values please!")      
-    with mysql.connector.connect(host=host, user=user,password=password,database=db_name) as conn:
+    with get_connection() as conn:
         with conn.cursor() as my_cursor:
             match status:
                 case 1:
@@ -97,12 +90,11 @@ def profile(username,/):
             break
         except ValueError:
             print("Invalid input!\nPlease try again...")
-    with mysql.connector.connect(host=host,user=user,password=password,database=db_name) as conn:
+    with get_connection() as conn:
         with conn.cursor() as my_cursor:
             my_cursor.execute("UPDATE users SET name = %s, sex = %s, bday = %s WHERE username = %s",(name,gender,birthday,username))
             conn.commit()
 def main_menu(username): 
-    __username: str = username
     print("\n----------Welcome to ToDoList Manager!----------")
     while True:
         print("\n1.Create a new list!")
@@ -111,22 +103,22 @@ def main_menu(username):
         print("4.Display all my plans")
         print("5.Profile")
         print("6.Log out...")
-        choice: str = input("\nEnter a digit(1-5) please\nEnter your choice:")
+        choice: str = input("\nEnter a digit(1-6) please\nEnter your choice:")
         try:
             choice = int(choice) 
         except ValueError:
-            print("Invalid input!\nPlease enter a digit from 1 to 5...")
+            print("Invalid input!\nPlease enter a digit from 1 to 6...")
             continue
         if choice == 1:
-            create_new(__username)
+            create_new(username)
         elif choice == 2:
-            status_change(__username)
+            status_change(username)
         elif choice == 3:
-            delete_item(__username)
+            delete_item(username)
         elif choice == 4:
-            print_all(__username)
+            print_all(username)
         elif choice == 5:
-            profile(__username)
+            profile(username)
         elif choice == 6:
             break
         else:

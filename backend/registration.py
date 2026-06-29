@@ -1,5 +1,5 @@
-import mysql.connector 
-import manager
+import backend.manager as manager
+from backend.database import get_connection
 def validator(prompt): #Function that checks username and password for validation
     while True:
         data = input(prompt).strip()
@@ -13,15 +13,17 @@ def register(): #Function that saves username and password in database
     username_prompt: str = "====================\nUsername should contain at least 8 symbols and a digit \nEnter your username:"
     password_prompt: str = "--------------------\nPassword should contain a digit and have at least 8 symbols<3\nEnter your password here:"
     username: str = validator(username_prompt)
-    with mysql.connector.connect(host=manager.host, user=manager.user, password=manager.password, database=manager.db_name) as conn:
-        with conn.cursor() as cursor:
-            cursor.execute("SELECT username FROM users")
-            usernames: list[tuple[str]] = cursor.fetchall()
-            if username in usernames:
-                print("Username already exists!!!\nPlease enter another username...")
-                username: str = validator(username_prompt) 
-            passwrd: str = validator(password_prompt)
-            cursor.execute("INSERT INTO users(username, password) VALUES(%s , %s)", (username, passwrd))
-            conn.commit()
+    while True:
+        with get_connection() as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT username FROM users WHERE username = %s",(username,))
+                if cursor.fetchone() is not None:
+                    print("Username already exists!!!\nPlease enter another username...")
+                    username: str = validator(username_prompt)
+                    continue
+                passwrd: str = validator(password_prompt)
+                cursor.execute("INSERT INTO users(username, password) VALUES(%s , %s)", (username, passwrd))
+                conn.commit()
+                break
     print(f"\nHello, {username}")
     manager.main_menu(username)

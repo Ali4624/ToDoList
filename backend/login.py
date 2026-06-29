@@ -1,15 +1,16 @@
-import mysql.connector as msl
-import manager
+import backend.manager as manager
+from backend.database import get_connection
 
-def Checker(username): #Function that reads file to check whether username and password exist or not 
-    with msl.connect(host=manager.host, user = manager.user, password = manager.password, database = manager.db_name) as conn:
+def Checker(username): #Function that reads file to check whether username and password exist or not
+    with get_connection() as conn:
         with conn.cursor() as mycursor:
             mycursor.execute('SELECT username FROM users WHERE username = %s', (username,))
             try:
-                if username in mycursor.fetchone():
+                if mycursor.fetchone() is not None:
                     passwrd: str  = input("\nEnter your password:")
                     mycursor.execute('SELECT password FROM users WHERE username = %s', (username,))
-                    if passwrd  in mycursor.fetchone():
+                    row: tuple[str] = mycursor.fetchone()
+                    if passwrd == row[0]:
                         print(f"\nHello, {username}")
                         manager.main_menu(username)
                     else:
